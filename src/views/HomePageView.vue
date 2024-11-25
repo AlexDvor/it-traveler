@@ -1,5 +1,5 @@
 <script setup>
-import IButton from '../components/IButton/IButton.vue'
+import IButton from '@/components/ui/IButton/IButton.vue'
 </script>
 
 <template>

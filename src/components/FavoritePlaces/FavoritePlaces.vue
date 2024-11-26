@@ -12,6 +12,8 @@ const props = defineProps({
     type: [Number, null],
   },
 })
+
+const emit = defineEmits(['place-clicked'])
 </script>
 
 <template>
@@ -22,6 +24,7 @@ const props = defineProps({
     :description="place.description"
     :img="place.img"
     :is-active="place.id === props.activeId"
+    @click="emit('place-clicked', place.id)"
   />
   <IButton class="w-full mt-3" variant="gradient">Add Marker</IButton>
 </template>

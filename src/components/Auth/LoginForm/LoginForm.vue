@@ -6,7 +6,6 @@ import FormContainer from '../FormContainer/FormContainer.vue'
 
 const emit = defineEmits(['submit'])
 const userData = reactive({
-  name: '',
   email: '',
   password: '',
 })
@@ -18,7 +17,6 @@ const handleSubmit = () => {
 
 <template>
   <FormContainer @submit.prevent="handleSubmit">
-    <IInput class="mb-4" label="Full name" placeholder="Alex Dvor" v-model="userData.name"></IInput>
     <IInput
       class="mb-4"
       label="Email"
@@ -26,6 +24,6 @@ const handleSubmit = () => {
       v-model="userData.email"
     ></IInput>
     <IInput label="Password" placeholder="************" v-model="userData.password"></IInput>
-    <IButton class="mt-5 w-full" variant="gradient" type="submit">Create Account</IButton>
+    <IButton class="mt-5 w-full" variant="gradient" type="submit">Log In</IButton>
   </FormContainer>
 </template>

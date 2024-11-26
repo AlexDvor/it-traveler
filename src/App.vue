@@ -1,27 +1,16 @@
 <script setup>
-import { ref } from 'vue'
-
-import LoginForm from './components/Auth/LoginForm/LoginForm.vue'
-import RegistrationForm from './components/Auth/RegistrationForm/RegistrationForm.vue'
-import CreateNewPlaceModal from './components/CreateNewPlaceModal/CreateNewPlaceModal.vue'
-
-const handleSubmit = (data) => {
-  console.log('Form submitted with data:', data)
-}
-const isOpen = ref(false)
-
-const closeModal = () => {
-  isOpen.value = false
-}
-
-const openModal = () => {
-  isOpen.value = true
-}
+import { MapboxMap } from '@studiometa/vue-mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import FavoritePlaces from './components/FavoritePlaces/FavoritePlaces.vue'
 </script>
 
 <template>
-  <button @click="openModal">Open Modal</button>
-  <LoginForm @submit="handleSubmit" />
-  <RegistrationForm @submit="handleSubmit" />
-  <CreateNewPlaceModal :isOpen="isOpen" @close="closeModal" />
+  <main class="flex h-screen">
+    <div class="bg-white h-full w-[400px] shrink-0 overflow-auto pb-10">
+      <FavoritePlaces />
+    </div>
+    <div class="w-full h-full items-center justify-center text-6xl">
+      <MapboxMap class="w-full h-full"></MapboxMap>
+    </div>
+  </main>
 </template>

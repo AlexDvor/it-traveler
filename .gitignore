@@ -18,7 +18,7 @@ coverage
 /cypress/screenshots/
 
 # Editor directories and files
-.map/token.js
+src/map/token.js
 .vscode/*
 !.vscode/extensions.json
 .idea

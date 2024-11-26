@@ -1,13 +1,14 @@
 <script setup>
 import { ref } from 'vue'
+
 import LoginForm from './components/Auth/LoginForm/LoginForm.vue'
 import RegistrationForm from './components/Auth/RegistrationForm/RegistrationForm.vue'
-import IModal from './components/IModal/IModal.vue'
+import CreateNewPlaceModal from './components/CreateNewPlaceModal/CreateNewPlaceModal.vue'
 
 const handleSubmit = (data) => {
   console.log('Form submitted with data:', data)
 }
-const isOpen = ref(true)
+const isOpen = ref(false)
 
 const closeModal = () => {
   isOpen.value = false
@@ -22,5 +23,5 @@ const openModal = () => {
   <button @click="openModal">Open Modal</button>
   <LoginForm @submit="handleSubmit" />
   <RegistrationForm @submit="handleSubmit" />
-  <IModal v-if="isOpen" @closeModal="closeModal"><div class="text-black">MOdal</div></IModal>
+  <CreateNewPlaceModal :isOpen="isOpen" @close="closeModal" />
 </template>

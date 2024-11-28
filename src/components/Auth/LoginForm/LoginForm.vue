@@ -1,22 +1,17 @@
 <script setup>
 import IButton from '@/components/ui/IButton/IButton.vue'
 import IInput from '@/components/ui/IInput/IInput.vue'
-import { reactive, toRaw } from 'vue'
-import FormContainer from '../FormContainer/FormContainer.vue'
+import { reactive } from 'vue'
 
 const emit = defineEmits(['submit'])
 const userData = reactive({
   email: '',
   password: '',
 })
-
-const handleSubmit = () => {
-  emit('submit', toRaw(userData))
-}
 </script>
 
 <template>
-  <FormContainer @submit.prevent="handleSubmit">
+  <form @submit.prevent="emit('submit', userData)">
     <IInput
       class="mb-4"
       label="Email"
@@ -25,5 +20,5 @@ const handleSubmit = () => {
     ></IInput>
     <IInput label="Password" placeholder="************" v-model="userData.password"></IInput>
     <IButton class="mt-5 w-full" variant="gradient" type="submit">Log In</IButton>
-  </FormContainer>
+  </form>
 </template>

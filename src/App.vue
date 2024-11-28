@@ -39,6 +39,7 @@ const favoritePlaces = [
 
 const activeId = ref(null)
 const map = ref(null)
+const isMapError = ref(false)
 
 const changeActiveId = (id) => {
   activeId.value = id
@@ -49,14 +50,24 @@ const changePlace = (id) => {
   map.value.flyTo({ center: lngLat })
   changeActiveId(id)
 }
+
+const handleMapError = (error) => {
+  console.error('Map error:', error)
+  isMapError.value = true
+}
 </script>
 
 <template>
   <main class="flex h-screen">
-    <div class="bg-white h-full w-[400px] shrink-0 overflow-auto pb-10">
+    <div
+      class="bg-white h-full w-[400px] shrink-0 overflow-auto pb-10 border-r-[1px] border-r-gray p-2"
+    >
       <FavoritePlaces :items="favoritePlaces" :active-id="activeId" @place-clicked="changePlace" />
     </div>
-    <div class="w-full h-full items-center justify-center text-6xl">
+    <div v-if="isMapError" class="flex justify-center w-full items-center text-red-600 text-lg">
+      Error connecting to the Map. Check your internet connection or API settings.
+    </div>
+    <div v-else class="w-full h-full items-center justify-center text-6xl">
       <MapboxMap
         class="w-full h-full"
         :center="[-4.421, 36.7213]"
@@ -64,6 +75,7 @@ const changePlace = (id) => {
         :access-token="mapSettings.apiToken"
         :map-style="mapSettings.style"
         @mb-created="(mapInstance) => (map = mapInstance)"
+        @mb-error="handleMapError"
       >
         <MapboxMarker v-for="place in favoritePlaces" :key="place.id" :lngLat="place.lngLat">
           <button @click="changeActiveId(place.id)">

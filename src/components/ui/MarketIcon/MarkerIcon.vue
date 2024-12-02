@@ -2,8 +2,8 @@
 defineProps({
   isActive: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 </script>
 

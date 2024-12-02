@@ -1,9 +1,18 @@
 <script setup>
-import IButton from '@/components/ui/IButton/IButton.vue'
-import IInput from '@/components/ui/IInput/IInput.vue'
 import { reactive } from 'vue'
 
+import IButton from '@/components/ui/IButton/IButton.vue'
+import IInput from '@/components/ui/IInput/IInput.vue'
+
+const props = defineProps({
+  isLoading: {
+    default: false,
+    type: Boolean,
+  },
+})
+
 const emit = defineEmits(['submit'])
+
 const userData = reactive({
   email: '',
   password: '',
@@ -19,6 +28,8 @@ const userData = reactive({
       v-model="userData.email"
     ></IInput>
     <IInput label="Password" placeholder="************" v-model="userData.password"></IInput>
-    <IButton class="mt-5 w-full" variant="gradient" type="submit">Log In</IButton>
+    <IButton class="mt-5 w-full" variant="gradient" type="submit" :is-loading="props.isLoading"
+      >Log In</IButton
+    >
   </form>
 </template>

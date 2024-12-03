@@ -9,7 +9,7 @@ const handleUploadImg = (event) => {
   const file = event.target.files[0]
 
   if (file.size > 3 * 1024 * 1024) {
-    errorMessage.value = 'Завеликий файл'
+    errorMessage.value = 'Image is so big'
     return
   }
 

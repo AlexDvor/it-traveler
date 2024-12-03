@@ -28,7 +28,7 @@ const formData = reactive({
   img: '',
 })
 const uploadText = computed(() => {
-  return formData.img ? 'Натисніть тут, щоб змінити фото' : 'Натисніть тут, щоб додати фото'
+  return formData.img ? 'Click here to change the photo' : 'Click here to add a photo'
 })
 
 const handleUpload = (url) => {
@@ -46,16 +46,16 @@ const resetForm = () => {
   <IModal v-if="props.isOpen" @close="emit('close')">
     <form @submit.prevent="emit('submit', formData, resetForm)" class="min-w-[420px]">
       <div class="flex gap-1 justify-center font-bold text-center mb-10">
-        <MarkerIcon /> Додати маркер
+        <MarkerIcon /> Add new place
       </div>
-      <IInput label="Локація" class="mb-4" v-model="formData.title" />
-      <IInput label="Опис" type="textarea" class="mb-2" v-model="formData.description" />
+      <IInput label="Location Name" class="mb-4" v-model="formData.title" />
+      <IInput label="Description" type="textarea" class="mb-2" v-model="formData.description" />
       <div class="flex gap-2 items-center mb-10">
         <img v-if="formData.img" :src="formData.img" alt="avatar" class="w-8 h-8 object-cover" />
         <InputImage @uploaded="handleUpload">{{ uploadText }}</InputImage>
       </div>
 
-      <IButton class="w-full" variant="gradient" :is-loading="props.isLoading">Додати</IButton>
+      <IButton class="w-full" variant="gradient" :is-loading="props.isLoading">Add</IButton>
       <div v-if="props.hasError" class="text-red-500">Щось пішло не так</div>
     </form>
   </IModal>

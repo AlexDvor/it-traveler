@@ -80,7 +80,7 @@ onMounted(() => {
 <template>
   <main class="flex h-screen">
     <div
-      class="bg-white h-full w-[400px] shrink-0 overflow-auto pb-10 border-r-[1px] border-r-gray p-2"
+      class="flex flex-col bg-white h-full w-[400px] shrink-0 overflow-auto border-r-[1px] border-r-gray"
     >
       <UserInfo />
       <div v-if="isPlacesLoading" class="text-black px-6">Loading...</div>
@@ -92,7 +92,8 @@ onMounted(() => {
         @create="openModal"
         @updated="getPlaces"
       />
-      <LogoutButton class="mt-10" />
+      <div class="mt-auto"><LogoutButton class="mt-10" /></div>
+
       <CreateNewPlaceModal
         :is-open="isOpen"
         :is-loading="isAddingPlace"

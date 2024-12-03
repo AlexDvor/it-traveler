@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
 import { getFavoritePlaces, addFavoritePlace } from '@/api/favorite-places/index.js'
 import { useModal } from '@/composables/useModal.js'
@@ -72,6 +72,8 @@ const handleAddPlace = async (formData, resetForm) => {
   resetForm()
 }
 
+const isDisabledBtn = computed(() => mapMarkerLngLat.value === null)
+
 onMounted(() => {
   getPlaces()
 })
@@ -88,6 +90,7 @@ onMounted(() => {
         :items="favoritePlaces"
         :active-id="activeId"
         :is-places-loading="isPlacesLoading"
+        :is-disabled-btn="isDisabledBtn"
         @place-clicked="changePlace"
         @create="openModal"
         @updated="getPlaces"

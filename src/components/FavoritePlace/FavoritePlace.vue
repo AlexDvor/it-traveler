@@ -32,7 +32,7 @@ const emit = defineEmits(['edit', 'delete'])
         <div class="flex justify-between items-center mb-2">
           <h2 class="font-bold text-sm text-[#2C2C2C]">{{ props.title }}</h2>
           <div class="flex gap-2">
-            <FavoritePlaceIconBtn @click="emit('edit')">
+            <FavoritePlaceIconBtn @click.stop="emit('edit')">
               <EditIcon />
             </FavoritePlaceIconBtn>
             <FavoritePlaceIconBtn @click.stop="emit('delete')">

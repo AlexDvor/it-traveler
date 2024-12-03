@@ -21,11 +21,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isDisabledBtn: {
+    default: false,
+    type: Boolean,
+  },
 })
 
 const emit = defineEmits(['place-clicked', 'create', 'updated'])
+
 const idOfDeletedItem = ref(null)
+
 const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal()
+
 const {
   isOpen: isConfirmationModalOpen,
   openModal: openConfirmationModal,
@@ -38,6 +45,7 @@ const { mutation: updatePlace, isLoading } = useMutation({
     emit('updated')
   },
 })
+
 const {
   mutation: deletePlace,
   isLoading: isDeleting,
@@ -50,7 +58,9 @@ const {
     emit('updated')
   },
 })
+
 const selectedId = ref(null)
+
 const selectedItem = computed(() => props.items.find((place) => place.id === selectedId.value))
 
 const handleEditPlace = (id) => {
@@ -104,6 +114,12 @@ const handleDeletePlace = () => {
       @confirm="handleDeletePlace"
       title="Are you shure that you want to remove your favorite place?"
     />
-    <IButton class="w-full mt-3" variant="gradient" @click="emit('create')">Add Marker</IButton>
+    <IButton
+      class="w-full mt-3"
+      variant="gradient"
+      @click="emit('create')"
+      :disabled="isDisabledBtn"
+      >{{ isDisabledBtn ? 'Mark a location on the map' : 'Add Marker' }}</IButton
+    >
   </div>
 </template>

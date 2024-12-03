@@ -15,19 +15,32 @@ const props = defineProps({
     default: false,
     type: Boolean,
   },
+  disabled: {
+    default: false,
+    type: Boolean,
+  },
 })
 
 const bgStyles = computed(() => {
-  return props.variant === 'gradient'
-    ? 'bg-gradient-to-r from-[#FFA279] to-[#F3743D]'
-    : 'bg-[#FFA279]'
+  if (props.variant === 'gradient' && !props.disabled) {
+    return 'bg-gradient-to-r from-[#FFA279] to-[#F3743D]'
+  } else if (props.variant !== 'gradient' && !props.disabled) {
+    return 'bg-[#FFA279]'
+  }
+
+  return 'bg-[#70635d]'
 })
 
-const isLink = computed(() => !!props.to)
+// return props.variant === 'gradient'
+//   ? 'bg-gradient-to-r from-[#FFA279] to-[#F3743D]'
+//   : 'bg-[#FFA279]'
+
+const isLink = computed(() => !!props.to && !props.disabled)
 
 const componentName = computed(() => {
   return isLink.value ? RouterLink : 'button'
 })
+
 const link = computed(() => {
   return isLink.value ? props.to : undefined
 })
@@ -39,6 +52,7 @@ const link = computed(() => {
     class="rounded-xl py-3 px-10 text-white font-bold -tracking-wider"
     :class="bgStyles"
     :to="link"
+    :disabled="!isLink.value && props.disabled"
   >
     <template v-if="props.isLoading">Loading...</template>
     <template v-else>

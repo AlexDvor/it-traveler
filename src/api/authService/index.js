@@ -1,17 +1,84 @@
 import { clientFetch } from '../clientFetch'
+import { router } from '../../router'
 
-export const login = (body) => {
-  return clientFetch.post('/user/login', body)
+export const TOKEN_KEY = 'token'
+
+class AuthService {
+  #token = null
+
+  isLoggedIn() {
+    return Boolean(this.#token)
+  }
+
+  getToken() {
+    return this.#token
+  }
+
+  setToken(token) {
+    localStorage.setItem(TOKEN_KEY, token)
+    this.#token = token
+  }
+
+  clearToken() {
+    this.#token = null
+    localStorage.removeItem(TOKEN_KEY)
+  }
+
+  async login(body) {
+    const { data } = await clientFetch.post('/user/login', body)
+    const { accessToken } = data
+
+    this.setToken(accessToken)
+  }
+
+  async registerUser(body) {
+    const { data } = await clientFetch.post('/user/register', body)
+    const { accessToken } = data
+
+    this.setToken(accessToken)
+  }
+
+  async logout() {
+    await clientFetch.get('/user/logout')
+    this.clearToken()
+  }
+
+  async refresh() {
+    const { data } = await clientFetch.get('/user/refresh')
+    const { accessToken } = data
+    this.setToken(accessToken)
+  }
 }
 
-export const registerUser = (body) => {
-  return clientFetch.post('/user/register', body)
-}
+export const authService = new AuthService()
 
-export const logout = () => {
-  return clientFetch.get('/user/logout')
-}
+clientFetch.interceptors.request.use((request) => {
+  const token = authService.getToken()
 
-export const refresh = () => {
-  return clientFetch.get('/user/refresh')
-}
+  if (token) {
+    request.headers = {
+      ...request.headers,
+      Authorization: `Bearer ${token}`,
+    }
+  }
+
+  return request
+})
+
+clientFetch.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const errorCode = error.response.status
+
+    if (errorCode === 401) {
+      try {
+        return await authService.refresh()
+      } catch (e) {
+        router.push('/auth/login')
+        return Promise.reject(e)
+      }
+    }
+
+    return Promise.reject(error)
+  },
+)

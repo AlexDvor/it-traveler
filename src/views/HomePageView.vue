@@ -1,53 +1,55 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
 import { mapSettings } from '../map/settings.js'
 import MarkerIcon from '../components/ui/MarketIcon/MarkerIcon.vue'
 import FavoritePlaces from '../components/FavoritePlaces/FavoritePlaces.vue'
+import { getFavoritePlaces } from '@/api/favorite-places/index.js'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-const favoritePlaces = [
-  {
-    id: 1,
-    title: 'Malaga',
-    description: 'Super Description 1',
-    img: './assets/images/ukraine.png',
-    lngLat: [-4.421, 36.7213],
-  },
-  {
-    id: 2,
-    title: 'Torremolinos',
-    description: 'Super Description 2',
-    img: './assets/images/ukraine.png',
-    lngLat: [-4.4998, 36.6211],
-  },
-  {
-    id: 3,
-    title: 'Algecira',
-    description: 'Super Description 3',
-    img: './assets/images/ukraine.png',
-    lngLat: [-5.4562, 36.1408],
-  },
-  {
-    id: 4,
-    title: 'Ronda',
-    description: 'Super Description 4',
-    img: './assets/images/ukraine.png',
-    lngLat: [-5.1611, 36.7461],
-  },
-]
+// const favoritePlaces = [
+//   {
+//     id: 1,
+//     title: 'Malaga',
+//     description: 'Super Description 1',
+//     img: './assets/images/ukraine.png',
+//     lngLat: [-4.421, 36.7213],
+//   },
+//   {
+//     id: 2,
+//     title: 'Torremolinos',
+//     description: 'Super Description 2',
+//     img: './assets/images/ukraine.png',
+//     lngLat: [-4.4998, 36.6211],
+//   },
+//   {
+//     id: 3,
+//     title: 'Algecira',
+//     description: 'Super Description 3',
+//     img: './assets/images/ukraine.png',
+//     lngLat: [-5.4562, 36.1408],
+//   },
+//   {
+//     id: 4,
+//     title: 'Ronda',
+//     description: 'Super Description 4',
+//     img: './assets/images/ukraine.png',
+//     lngLat: [-5.1611, 36.7461],
+//   },
+// ]
 
 const activeId = ref(null)
 const map = ref(null)
 const isMapError = ref(false)
+const favoritePlaces = ref([])
 
 const changeActiveId = (id) => {
   activeId.value = id
 }
 
 const changePlace = (id) => {
-  const { lngLat } = favoritePlaces.find((place) => place.id === id)
+  const { lngLat } = favoritePlaces.value.find((place) => place.id === id)
   map.value.flyTo({ center: lngLat })
   changeActiveId(id)
 }
@@ -56,6 +58,12 @@ const handleMapError = (error) => {
   console.error('Map error:', error)
   isMapError.value = true
 }
+
+onMounted(async () => {
+  const { data } = await getFavoritePlaces()
+  console.log('🚀 ~ data:', data)
+  favoritePlaces.value = data
+})
 </script>
 
 <template>

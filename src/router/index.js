@@ -9,7 +9,7 @@ const RegistrationPage = () => import('../views/RegistrationView.vue')
 
 const routes = [
   { path: '/', component: GreetingPage, name: 'greeting' },
-  { path: '/map', component: HomePage, name: 'homepage' },
+  { path: '/map', component: HomePage, name: 'homepage', meta: { requiresAuth: true } },
   {
     path: '/auth',
     component: AuthPage,
@@ -28,11 +28,13 @@ export const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authRoutes = ['login', 'registration']
+  const isAuthenticated = authService.isLoggedIn()
+  console.log('🚀 ~ isAuthenticated:', isAuthenticated)
   const { name } = to
 
-  if (authService.isLoggedIn() && authRoutes.includes(name)) {
+  if (isAuthenticated && authRoutes.includes(name)) {
     next({ name: 'homepage' })
-  } else if (!authRoutes.includes(name) && !authService.isLoggedIn()) {
+  } else if (!authRoutes.includes(name) && !isAuthenticated) {
     next({ name: 'login' })
   } else {
     next()

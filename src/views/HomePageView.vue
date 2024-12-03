@@ -5,6 +5,8 @@ import { mapSettings } from '../map/settings.js'
 import MarkerIcon from '../components/ui/MarketIcon/MarkerIcon.vue'
 import FavoritePlaces from '../components/FavoritePlaces/FavoritePlaces.vue'
 import { getFavoritePlaces } from '@/api/favorite-places/index.js'
+import { useModal } from '@/composables/useModal.js'
+import CreateNewPlaceModal from '@/components/CreateNewPlaceModal/CreateNewPlaceModal.vue'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -44,6 +46,7 @@ const map = ref(null)
 const isMapError = ref(false)
 const favoritePlaces = ref([])
 const mapMarkerLngLat = ref(null)
+const { isOpen, closeModal, openModal } = useModal()
 
 const changeActiveId = (id) => {
   activeId.value = id
@@ -76,7 +79,13 @@ onMounted(async () => {
     <div
       class="bg-white h-full w-[400px] shrink-0 overflow-auto pb-10 border-r-[1px] border-r-gray p-2"
     >
-      <FavoritePlaces :items="favoritePlaces" :active-id="activeId" @place-clicked="changePlace" />
+      <FavoritePlaces
+        :items="favoritePlaces"
+        :active-id="activeId"
+        @place-clicked="changePlace"
+        @create="openModal"
+      />
+      <CreateNewPlaceModal :is-open="isOpen" @close="closeModal" />
     </div>
     <div v-if="isMapError" class="flex justify-center w-full items-center text-red-600 text-lg">
       Error connecting to the Map. Check your internet connection or API settings.

@@ -119,15 +119,15 @@ onMounted(() => {
         @mb-created="(mapInstance) => (map = mapInstance)"
         @mb-error="handleMapError"
       >
-        <MapboxMarker v-if="mapMarkerLngLat" :lngLat="mapMarkerLngLat" anchor="bottom">
-          <MarkerIcon class="h-8 w-8" is-active />
-        </MapboxMarker>
         <MapboxMarker
           v-for="place in favoritePlaces"
           :key="place.id"
           :lngLat="place.coordinates"
           anchor="bottom"
         >
+          <MapboxMarker v-if="mapMarkerLngLat" :lngLat="mapMarkerLngLat" anchor="bottom">
+            <MarkerIcon class="h-8 w-8" is-active />
+          </MapboxMarker>
           <button @click="changeActiveId(place.id)">
             <MarkerIcon class="h-8 w-8" />
           </button>
